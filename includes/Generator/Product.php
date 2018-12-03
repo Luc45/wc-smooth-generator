@@ -42,7 +42,7 @@ class Product extends Generator {
 	 *
 	 * @return \WC_Product_Variable
 	 */
-	protected static function generate_variable_product(
+	public static function generate_variable_product(
         $height = [],
         $width =  [],
         $length = [],
@@ -140,7 +140,7 @@ class Product extends Generator {
 	 *
 	 * @return \WC_Product
 	 */
-	protected static function generate_simple_product(
+	public static function generate_simple_product(
 	    $height = null,
         $width = null,
         $length = null,
