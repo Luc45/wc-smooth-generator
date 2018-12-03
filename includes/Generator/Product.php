@@ -42,13 +42,24 @@ class Product extends Generator {
 	 *
 	 * @return \WC_Product_Variable
 	 */
-	protected static function generate_variable_product() {
+	protected static function generate_variable_product(
+        $height = [],
+        $width =  [],
+        $length = [],
+        $weight = [],
+        $is_virtual = false
+    ) {
 		$faker             = \Faker\Factory::create();
 		$name              = $faker->words( $faker->numberBetween( 1, 5 ), true );
 		$will_manage_stock = $faker->boolean();
 		$product           = new \WC_Product_Variable();
 		$nr_attributes     = $faker->numberBetween( 1, 3 );
 		$attributes        = array();
+
+        $height = is_empty($height) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $height[0], $height[1] );
+        $width  = is_empty($width)  ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $width[0], $width[1] );
+        $length = is_empty($length) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $length[0], $length[1] );
+        $weight = is_empty($weight) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $weight[0], $weight[1] );
 
 		$image_id = self::generate_image();
 		$gallery  = self::maybe_get_gallery_image_ids();
@@ -95,7 +106,6 @@ class Product extends Generator {
 			$price      = $faker->randomFloat( 2, 1, 1000 );
 			$is_on_sale = $faker->boolean( 30 );
 			$sale_price = $is_on_sale ? $faker->randomFloat( 2, 0, $price ) : '';
-			$is_virtual = $faker->boolean( 20 );
 			$variation  = new \WC_Product_Variation();
 			$variation->set_props( array(
 				'parent_id'         => $product->get_id(),
@@ -109,10 +119,10 @@ class Product extends Generator {
 				'manage_stock'      => $will_manage_stock,
 				'stock_quantity'    => $will_manage_stock ? $faker->numberBetween( -100, 100 ) : null,
 				'stock_status'      => 'instock',
-				'weight'            => $is_virtual ? '' : $faker->numberBetween( 1, 200 ),
-				'length'            => $is_virtual ? '' : $faker->numberBetween( 1, 200 ),
-				'width'             => $is_virtual ? '' : $faker->numberBetween( 1, 200 ),
-				'height'            => $is_virtual ? '' : $faker->numberBetween( 1, 200 ),
+                'height'             => $height,
+                'width'              => $width,
+                'length'             => $length,
+                'weight'             => $weight,
 				'virtual'           => $is_virtual,
 				'downloadable'      => false,
 				'image_id'          => self::generate_image(),
@@ -130,15 +140,25 @@ class Product extends Generator {
 	 *
 	 * @return \WC_Product
 	 */
-	protected static function generate_simple_product() {
+	protected static function generate_simple_product(
+	    $height = null,
+        $width = null,
+        $length = null,
+        $weight = null,
+        $is_virtual = false
+    ) {
 		$faker             = \Faker\Factory::create();
 		$name              = $faker->words( $faker->numberBetween( 1, 5 ), true );
-		$will_manage_stock = $faker->boolean();
-		$is_virtual        = $faker->boolean();
+		$will_manage_stock = false;
 		$price             = $faker->randomFloat( 2, 1, 1000 );
 		$is_on_sale        = $faker->boolean( 30 );
 		$sale_price        = $is_on_sale ? $faker->randomFloat( 2, 0, $price ) : '';
 		$product           = new \WC_Product();
+
+        $height = is_null($height) ? $faker->numberBetween( 1, 200 ) : $height;
+        $width  = is_null($width)  ? $faker->numberBetween( 1, 200 ) : $width;
+        $length = is_null($length) ? $faker->numberBetween( 1, 200 ) : $length;
+        $weight = is_null($weight) ? $faker->numberBetween( 1, 200 ) : $weight;
 
 		$image_id = self::generate_image();
 		$gallery  = self::maybe_get_gallery_image_ids();
@@ -162,10 +182,10 @@ class Product extends Generator {
 			'stock_status'       => 'instock',
 			'backorders'         => $faker->randomElement( array( 'yes', 'no', 'notify' ) ),
 			'sold_individually'  => $faker->boolean( 20 ),
-			'weight'             => $is_virtual ? '' : $faker->numberBetween( 1, 200 ),
-			'length'             => $is_virtual ? '' : $faker->numberBetween( 1, 200 ),
-			'width'              => $is_virtual ? '' : $faker->numberBetween( 1, 200 ),
-			'height'             => $is_virtual ? '' : $faker->numberBetween( 1, 200 ),
+            'height'             => $height,
+            'width'              => $width,
+            'length'             => $length,
+            'weight'             => $weight,
 			'upsell_ids'         => self::get_existing_product_ids(),
 			'cross_sell_ids'     => self::get_existing_product_ids(),
 			'parent_id'          => 0,
