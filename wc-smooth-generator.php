@@ -6,6 +6,7 @@
  * Version: 1.0.0
  * Author: Automattic
  * Author URI: https://woocommerce.com
+ * Author: Lucas Bustamante
  *
  * @package WooCommerce
  */
