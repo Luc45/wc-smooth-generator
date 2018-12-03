@@ -2,7 +2,7 @@
   "name": "woocommerce/wc-smooth-generator",
   "description": "A smooth customer, order and product generator for WooCommerce.",
   "homepage": "https://woocommerce.com/",
-  "type": "wordpress-plugin",
+  "type": "library",
   "license": "GPL-3.0-or-later",
   "prefer-stable": true,
   "minimum-stability": "dev",
