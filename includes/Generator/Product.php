@@ -59,7 +59,7 @@ class Product extends Generator {
         $weight = empty($weight) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $weight[0], $weight[1] );
         $price =  empty($price)  ? $faker->randomFloat(2, 1, 1000) : (float) $faker->numberBetween( $price[0], $price[1] );
         $is_on_sale = $faker->boolean( 30 );
-        $sale_price = $is_on_sale ? ($price - (($price/100) * $faker->randomFloat(2, 1, 75)))) : '';
+        $sale_price = $is_on_sale ? ( $price - ( ($price/100) * $faker->randomFloat(2, 1, 75) ) ) : '';
 
         $image_id = self::generate_image();
         $gallery  = self::maybe_get_gallery_image_ids();
@@ -160,7 +160,7 @@ class Product extends Generator {
         $weight = is_null($weight) ? $faker->numberBetween( 1, 200 ) : $weight;
         $price =  is_null($price)  ? $faker->randomFloat(2, 1, 1000) : (float) $price;
         $is_on_sale = $faker->boolean( 30 );
-        $sale_price = $is_on_sale ? ($price - (($price/100) * $faker->randomFloat(2, 1, 75)))) : '';
+        $sale_price = $is_on_sale ? ( $price - ( ($price/100) * $faker->randomFloat(2, 1, 75) ) ) : '';
 
         $image_id = self::generate_image();
         $gallery  = self::maybe_get_gallery_image_ids();
