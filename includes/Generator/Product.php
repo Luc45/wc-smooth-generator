@@ -43,6 +43,7 @@ class Product extends Generator {
         $width =  [],
         $length = [],
         $weight = [],
+        $price = [],
         $is_virtual = false
     ) {
         $faker             = \Faker\Factory::create();
@@ -52,10 +53,13 @@ class Product extends Generator {
         $nr_attributes     = $faker->numberBetween( 1, 3 );
         $attributes        = array();
 
-        $height = is_empty($height) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $height[0], $height[1] );
-        $width  = is_empty($width)  ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $width[0], $width[1] );
-        $length = is_empty($length) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $length[0], $length[1] );
-        $weight = is_empty($weight) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $weight[0], $weight[1] );
+        $height = empty($height) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $height[0], $height[1] );
+        $width  = empty($width)  ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $width[0], $width[1] );
+        $length = empty($length) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $length[0], $length[1] );
+        $weight = empty($weight) ? $faker->numberBetween( 1, 200 ) : $faker->numberBetween( $weight[0], $weight[1] );
+        $price =  empty($price)  ? $faker->randomFloat(2, 1, 1000) : (float) $faker->numberBetween( $price[0], $price[1] );
+        $is_on_sale = $faker->boolean( 30 );
+        $sale_price = $is_on_sale ? ($price - (($price/100) * $faker->randomFloat(2, 1, 75)))) : '';
 
         $image_id = self::generate_image();
         $gallery  = self::maybe_get_gallery_image_ids();
@@ -99,9 +103,6 @@ class Product extends Generator {
         $variation_attributes = wc_list_pluck( array_filter( $product->get_attributes(), 'wc_attributes_array_filter_variation' ), 'get_slugs' );
         $possible_attributes  = array_reverse( wc_array_cartesian( $variation_attributes ) );
         foreach ( $possible_attributes as $possible_attribute ) {
-            $price      = $faker->randomFloat( 2, 1, 1000 );
-            $is_on_sale = $faker->boolean( 30 );
-            $sale_price = $is_on_sale ? $faker->randomFloat( 2, 0, $price ) : '';
             $variation  = new \WC_Product_Variation();
             $variation->set_props( array(
                 'parent_id'         => $product->get_id(),
@@ -145,20 +146,21 @@ class Product extends Generator {
         $width = null,
         $length = null,
         $weight = null,
+        $price = null,
         $is_virtual = false
     ) {
         $faker             = \Faker\Factory::create();
         $name              = $faker->words( $faker->numberBetween( 1, 5 ), true );
         $will_manage_stock = false;
-        $price             = $faker->randomFloat( 2, 1, 1000 );
-        $is_on_sale        = $faker->boolean( 30 );
-        $sale_price        = $is_on_sale ? $faker->randomFloat( 2, 0, $price ) : '';
         $product           = new \WC_Product();
 
         $height = is_null($height) ? $faker->numberBetween( 1, 200 ) : $height;
         $width  = is_null($width)  ? $faker->numberBetween( 1, 200 ) : $width;
         $length = is_null($length) ? $faker->numberBetween( 1, 200 ) : $length;
         $weight = is_null($weight) ? $faker->numberBetween( 1, 200 ) : $weight;
+        $price =  is_null($price)  ? $faker->randomFloat(2, 1, 1000) : (float) $price;
+        $is_on_sale = $faker->boolean( 30 );
+        $sale_price = $is_on_sale ? ($price - (($price/100) * $faker->randomFloat(2, 1, 75)))) : '';
 
         $image_id = self::generate_image();
         $gallery  = self::maybe_get_gallery_image_ids();
